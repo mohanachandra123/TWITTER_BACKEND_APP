@@ -1,0 +1,16 @@
+POST http://localhost:3000/register/
+
+{
+  "username": "adam_richard",
+  "password": "richard_567",
+  "name": "Adam Richard",
+  "gender": "male"
+}
+
+###
+POST http://localhost:3000/login/
+
+{
+    "username":"adam_richard",
+  "password":"richard_567"
+}
