@@ -58,7 +58,7 @@ const authenticateToken = (request, response, next) => {
   }
 };
 
-//Register API
+// API 1
 
 app.post("/register/", async (request, response) => {
   const { username, password, name, gender } = request.body;
@@ -79,7 +79,7 @@ app.post("/register/", async (request, response) => {
       );`;
     if (validatePassword(password)) {
       await db.run(createUserQuery);
-      response.send("User Created Successfully");
+      response.send("User created successfully");
     } else {
       response.status(400);
       response.send("Password is too short");
@@ -90,7 +90,7 @@ app.post("/register/", async (request, response) => {
   }
 });
 
-//Login API
+// API 2
 
 app.post("/login/", async (request, response) => {
   const { username, password } = request.body;
@@ -99,7 +99,7 @@ app.post("/login/", async (request, response) => {
 
   if (dbUser === undefined) {
     response.status(400);
-    response.send("Invalid User");
+    response.send("Invalid user");
   } else {
     const isPasswordMatched = await bcrypt.compare(password, dbUser.password);
     if (isPasswordMatched === true) {
@@ -108,7 +108,7 @@ app.post("/login/", async (request, response) => {
       response.send({ jwtToken });
     } else {
       response.status(400);
-      response.send("Invalid Password");
+      response.send("Invalid password");
     }
   }
 });
