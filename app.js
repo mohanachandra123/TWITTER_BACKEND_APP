@@ -32,7 +32,7 @@ const initializeDbAndServer = async () => {
 initializeDbAndServer();
 
 const validatePassword = (password) => {
-  return password.length > 5;
+  return password.length < 6;
 };
 
 //Middleware Function
@@ -62,7 +62,7 @@ const authenticateToken = (request, response, next) => {
 
 app.post("/register/", async (request, response) => {
   const { username, password, name, gender } = request.body;
-  const hashedPassword = await bcrypt.hash(password, 25);
+  const hashedPassword = await bcrypt.hash(password, 10);
   const selectUserQuery = `SELECT * FROM user WHERE username = '${username}';`;
   const dbUser = await db.get(selectUserQuery);
 
@@ -78,11 +78,12 @@ app.post("/register/", async (request, response) => {
        '${gender}'
       );`;
     if (validatePassword(password)) {
-      await db.run(createUserQuery);
-      response.send("User created successfully");
-    } else {
       response.status(400);
       response.send("Password is too short");
+    } else {
+      await db.run(createUserQuery);
+      response.status(200);
+      response.send("User created successfully");
     }
   } else {
     response.status(400);
