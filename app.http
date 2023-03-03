@@ -1,4 +1,5 @@
 POST http://localhost:3000/register/
+Content-Type: application/json
 
 {
   "username": "adam_richard",
@@ -9,8 +10,13 @@ POST http://localhost:3000/register/
 
 ###
 POST http://localhost:3000/login/
+Content-Type: application/json
 
 {
-    "username":"adam_richard",
-  "password":"richard_567"
+    "username":"JoeBiden",
+  "password":"biden@123"
 }
+
+###
+GET http://localhost:3000/user/tweets/feed/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkpvZUJpZGVuIiwiaWF0IjoxNjc3ODUxMjgyfQ.UuM08Ktx9vOGxHKiGrSrN5jfn3vCSLRh-CZuCbEDUQw

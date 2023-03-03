@@ -52,6 +52,7 @@ const authenticateToken = (request, response, next) => {
         response.status(401);
         response.send("Invalid JWT Token");
       } else {
+        request.username = payload.username;
         next();
       }
     });
@@ -112,6 +113,14 @@ app.post("/login/", async (request, response) => {
       response.send("Invalid password");
     }
   }
+});
+
+//API 3
+
+app.get("/user/tweets/feed/", authenticateToken, async (request, response) => {
+  let { username } = request;
+  const getUser = `SELECT user_id FROM user WHERE username = '${username}';`;
+  const id = await db.get(getUser);
 });
 
 module.exports = app;
