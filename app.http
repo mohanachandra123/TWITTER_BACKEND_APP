@@ -19,4 +19,4 @@ Content-Type: application/json
 
 ###
 GET http://localhost:3000/user/tweets/feed/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkpvZUJpZGVuIiwiaWF0IjoxNjc3ODUxMjgyfQ.UuM08Ktx9vOGxHKiGrSrN5jfn3vCSLRh-CZuCbEDUQw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkpvZUJpZGVuIiwiaWF0IjoxNjc3OTA5ODcwfQ.aas3s3HDJqohMb71Pdxf3-p7vcA13lIu78rb2B97Vmw
