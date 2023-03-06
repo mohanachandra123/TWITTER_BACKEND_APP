@@ -144,15 +144,48 @@ app.get("/user/following/", authenticateToken, async (request, response) => {
   const getUser = `SELECT user_id FROM user WHERE username = '${username}';`;
   const id = await db.get(getUser);
 
-  const getFollowersQuery = `
-  SELECT user.username 
+  const getFollowingQuery = `
+  SELECT user.name 
   FROM
   follower INNER JOIN user ON user.user_id = follower.following_user_id
   WHERE 
   follower.follower_user_id = ${id.user_id};`;
 
+  const results = await db.all(getFollowingQuery);
+  response.send(results);
+});
+
+//API 5
+
+app.get("/user/followers/", authenticateToken, async (request, response) => {
+  const { username } = request;
+  const getUser = `SELECT user_id FROM user WHERE username = '${username}';`;
+  const id = await db.get(getUser);
+
+  const getFollowersQuery = `
+  SELECT user.name 
+  FROM
+  follower INNER JOIN user ON user.user_id = follower.follower_user_id
+  WHERE 
+  follower.following_user_id = ${id.user_id};`;
+
   const results = await db.all(getFollowersQuery);
   response.send(results);
 });
 
+//API 6
+
+app.get("/tweets/:tweetId/", authenticateToken, async (request, response) => {
+  const { tweetId } = request.params;
+
+  const { username } = request;
+  const getUser = `SELECT user_id FROM user WHERE username = '${username}';`;
+  const id = await db.get(getUser);
+
+  const userFollowingQuery = `
+  SELECT * FROM 
+  follower INNER JOIN user ON user.user_id = follower.following_user_id
+  WHERE follower.follower.user_id = ${id.user_id};
+  `;
+});
 module.exports = app;
