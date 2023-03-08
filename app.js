@@ -200,7 +200,7 @@ app.get("/tweets/:tweetId/", authenticateToken, async (request, response) => {
   ) {
     //response
     const resultQuery = `
-    SELECT tweet.tweet,COUNT(like.like_id) AS likes,COUNT(*) AS replies,reply.date_time AS dateTime
+    SELECT tweet.tweet,COUNT(like.like_id) AS likes,COUNT(*) AS replies,tweet.date_time AS dateTime
     FROM 
     tweet INNER JOIN like ON tweet.user_id = like.user_id
     INNER JOIN reply ON tweet.user_id = reply.user_id
