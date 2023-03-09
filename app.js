@@ -199,19 +199,50 @@ app.get("/tweets/:tweetId/", authenticateToken, async (request, response) => {
     userFollowers.some((item) => item.following_user_id === tweetResult.user_id)
   ) {
     //response
-    const resultQuery = `
-    SELECT tweet.tweet,COUNT(like.like_id) AS likes,COUNT(*) AS replies,tweet.date_time AS dateTime
-    FROM 
-    tweet INNER JOIN like ON tweet.user_id = like.user_id
-    INNER JOIN reply ON tweet.user_id = reply.user_id
-    WHERE tweet.tweet_id = ${tweetId};
+    const { tweet_id, date_time, tweet } = tweetResult;
+
+    const getLikesCount = `
+    
+    SELECT COUNT(like_id) AS likes FROM like 
+    WHERE tweet_id = ${tweet_id}
+    GROUP BY tweet_id;`;
+
+    const likesObj = await db.get(getLikesCount);
+
+    const getRepliesCount = `
+    SELECT COUNT(reply_id) AS replies FROM reply 
+    WHERE tweet_id = ${tweet_id}
+    GROUP BY tweet_id;
     `;
 
-    const result = await db.get(resultQuery);
-    response.send(result);
+    const repliesObj = await db.get(getRepliesCount);
+
+    response.send({
+      tweet,
+      likes: likesObj.likes,
+      replies: repliesObj.replies,
+      dateTime: date_time,
+    });
   } else {
     response.status(401);
     response.send("Invalid Request");
   }
+});
+
+//API 9
+
+app.get("/user/tweets/", authenticateToken, async (request, response) => {
+  const { username } = request;
+  const getUser = `SELECT user_id FROM user WHERE username = '${username}';`;
+  const id = await db.get(getUser);
+
+  const getTweetsQuery = `
+  SELECT tweet.tweet, COUNT(like_id) AS likes, COUNT(reply_id) AS replies, tweet.date_time AS dateTime
+  FROM tweet INNER JOIN like ON tweet.user_id = like.user_id
+  INNER JOIN reply ON tweet.user_id = reply.user_id
+  WHERE tweet.user_id = ${id.user_id};
+  `;
+  const result = await db.all(getTweetsQuery);
+  response.send(result);
 });
 module.exports = app;
