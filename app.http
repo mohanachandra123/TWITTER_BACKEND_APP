@@ -36,3 +36,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkpvZ
 ###
 GET http://localhost:3000/user/tweets/
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkpvZUJpZGVuIiwiaWF0IjoxNjc3OTA5ODcwfQ.aas3s3HDJqohMb71Pdxf3-p7vcA13lIu78rb2B97Vmw
+
+###
+GET http://localhost:3000/tweets/:tweetId/likes/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkpvZUJpZGVuIiwiaWF0IjoxNjc3OTA5ODcwfQ.aas3s3HDJqohMb71Pdxf3-p7vcA13lIu78rb2B97Vmw
