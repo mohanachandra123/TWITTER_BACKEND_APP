@@ -38,5 +38,17 @@ GET http://localhost:3000/user/tweets/
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkpvZUJpZGVuIiwiaWF0IjoxNjc3OTA5ODcwfQ.aas3s3HDJqohMb71Pdxf3-p7vcA13lIu78rb2B97Vmw
 
 ###
-GET http://localhost:3000/tweets/:tweetId/likes/
+GET http://localhost:3000/tweets/1/likes/
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkpvZUJpZGVuIiwiaWF0IjoxNjc3OTA5ODcwfQ.aas3s3HDJqohMb71Pdxf3-p7vcA13lIu78rb2B97Vmw
+
+###
+GET http://localhost:3000/tweets/1/replies/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkpvZUJpZGVuIiwiaWF0IjoxNjc3OTA5ODcwfQ.aas3s3HDJqohMb71Pdxf3-p7vcA13lIu78rb2B97Vmw
+
+###
+POST http://localhost:3000/user/tweets/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkpvZUJpZGVuIiwiaWF0IjoxNjc3OTA5ODcwfQ.aas3s3HDJqohMb71Pdxf3-p7vcA13lIu78rb2B97Vmw
+
+{
+    "tweet": "Good Morning"
+}
