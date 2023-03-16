@@ -321,13 +321,14 @@ app.get("/user/tweets/", authenticateToken, async (request, response) => {
 app.post("/user/tweets/", authenticateToken, async (request, response) => {
   const { username } = request;
   const { tweet } = request.body;
+  const date = new Date();
   const getUser = `SELECT user_id FROM user WHERE username = ${username}`;
   const id = await db.get(getUser);
 
   const createTweetQuery = `
     INSERT INTO 
-    tweet (tweet)
-    VALUES ('${tweet}')
+    tweet (tweet,user_id,date_time)
+    VALUES ('${tweet}',${id.user_id},${date})
     WHERE tweet.user_id = ${id.user_id};
     `;
 
