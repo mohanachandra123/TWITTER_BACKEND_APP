@@ -322,17 +322,46 @@ app.post("/user/tweets/", authenticateToken, async (request, response) => {
   const { username } = request;
   const { tweet } = request.body;
   const date = new Date();
-  const getUser = `SELECT user_id FROM user WHERE username = ${username}`;
+  const getUser = `SELECT user_id FROM user WHERE username = '${username}'`;
   const id = await db.get(getUser);
 
   const createTweetQuery = `
     INSERT INTO 
     tweet (tweet,user_id,date_time)
-    VALUES ('${tweet}',${id.user_id},${date})
-    WHERE tweet.user_id = ${id.user_id};
+    VALUES ('${tweet}',${id.user_id},'${date}');
     `;
 
   const result = await db.run(createTweetQuery);
   response.send("Created a Tweet");
 });
+
+//API 11
+
+app.delete(
+  "/tweets/:tweetId/",
+  authenticateToken,
+  async (request, response) => {
+    const { username } = request;
+    const { tweetId } = request.params;
+    const getUser = `SELECT user_id FROM user WHERE username = '${username}'`;
+    const id = await db.get(getUser);
+
+    const userTweets = `
+    SELECT * FROM tweet WHERE user_id = ${id.user_id};
+    `;
+    const tweetResult = await db.all(userTweets);
+
+    if (tweetResult.some((item) => item.tweet_id === tweetId)) {
+      const deleteQuery = `
+        DELETE FROM tweet 
+        WHERE tweet_id = ${tweetId};
+        `;
+      await db.run(deleteQuery);
+      response.send("Tweet Removed");
+    } else {
+      response.status(401);
+      response.status("Invalid Request");
+    }
+  }
+);
 module.exports = app;
