@@ -347,11 +347,12 @@ app.delete(
     const id = await db.get(getUser);
 
     const userTweets = `
-    SELECT * FROM tweet WHERE user_id = ${id.user_id};
+    SELECT * FROM tweet WHERE tweet_id = ${tweetId};
     `;
-    const tweetResult = await db.all(userTweets);
+    const tweetResult = await db.get(userTweets);
+    const { user_id } = tweetResult;
 
-    if (tweetResult.some((item) => item.tweet_id === tweetId)) {
+    if (user_id === id.user_id) {
       const deleteQuery = `
         DELETE FROM tweet 
         WHERE tweet_id = ${tweetId};
@@ -360,7 +361,7 @@ app.delete(
       response.send("Tweet Removed");
     } else {
       response.status(401);
-      response.status("Invalid Request");
+      response.send("Invalid Request");
     }
   }
 );
