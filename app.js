@@ -183,22 +183,15 @@ app.get("/tweets/:tweetId/", authenticateToken, async (request, response) => {
   const id = await db.get(getUser);
 
   const tweetsQuery = `
-  SELECT * FROM tweet WHERE tweet_id = ${tweetId};
+  SELECT * FROM tweet INNER JOIN follower ON tweet.user_id = follower.following_user_id
+  WHERE tweet.tweet_id = ${tweetId} AND follower.follower_user_id = ${id.user_id};
   `;
-
   const tweetResult = await db.get(tweetsQuery);
 
-  const userFollowingQuery = `
-  SELECT * FROM 
-  follower INNER JOIN user ON user.user_id = follower.following_user_id
-  WHERE follower.follower_user_id = ${id.user_id};
-  `;
-  const userFollowers = await db.all(userFollowingQuery);
-
-  if (
-    userFollowers.some((item) => item.following_user_id === tweetResult.user_id)
-  ) {
-    //response
+  if (tweetResult === undefined) {
+    response.status(401);
+    response.send("Invalid Request");
+  } else {
     const { tweet_id, date_time, tweet } = tweetResult;
 
     const getLikesCount = `
@@ -223,9 +216,6 @@ app.get("/tweets/:tweetId/", authenticateToken, async (request, response) => {
       replies: repliesObj.replies,
       dateTime: date_time,
     });
-  } else {
-    response.status(401);
-    response.send("Invalid Request");
   }
 });
 
